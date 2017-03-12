@@ -9,7 +9,7 @@ float r_x = 50.0, r_y = 290.0, r_w = 80, r_h = 8.0; //coordinates and dimensions
 Ball ball(5);
 Brick brick[10][15];
 
-bool isCollision(Ball &b, Brick &br)
+bool isCollision(Ball const& b, Brick const& br)
 {
 	float x = b.x, y = b.y, r = b.r, c = br.col, w = br.w, row = br.row, h = br.h;
 	if (br.active)
@@ -106,12 +106,11 @@ void Timer(int)
 					{
 						b.active = false;
 					}
-					goto o;
 				}
 			}
 		}
 	}
-o:	Draw();
+    Draw();
 	glutTimerFunc(33, Timer, 0);
 }
 
@@ -125,7 +124,8 @@ void MousePress(int button, int state, int x, int y)
 	}
 }
 
-void Mouse(int ax, int ay)
+//Tracking the movement of the racket with the mouse
+void RacketMouse(int ax, int ay)
 {
 	r_x = ax - r_w / 2;
 	if (!ball.active)
@@ -152,7 +152,7 @@ int main(int argc, char** argv)
 	glutCreateWindow("Arkanoid ++i");
 	glutDisplayFunc(Draw);
 	glutTimerFunc(33, Timer, 0);
-	glutPassiveMotionFunc(Mouse);
+	glutPassiveMotionFunc(RacketMouse);
 	glutMouseFunc(MousePress);
 	Init();
 	for (int i=0; i<10;i++)
